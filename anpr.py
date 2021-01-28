@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from PIL import Image
 
 from skimage.segmentation import clear_border
@@ -163,11 +163,13 @@ def process_image():
         # show the output ANPR image
         #print(format(lpText))
         print("[INFO] {}".format(lpText))
-        cv2.imshow("Output ANPR", image)
+        #cv2.imshow("Output ANPR", image)
+        cv2.imwrite("images/output.png", image)
         #cv2.waitKey(0)
     
 
     return jsonify({'vechileId':format(cleanup_text(lpText))})
+    #return send_file("images/output.png", mimetype='images/png', as_attachment=True, attachment_filename='output.png')
     
 
 
