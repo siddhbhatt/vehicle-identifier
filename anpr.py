@@ -132,13 +132,13 @@ def cleanup_text(text):
     # using OpenCV
     return "".join([c if ord(c) < 128 else "" for c in text]).strip()
 
-@app.route("/im_size", methods=["POST"])
+@app.route("/anpr", methods=["POST"])
 def process_image():
     file = request.files['image']
     print("file = ", file)
     # Read the image via file.stream
     img = Image.open(file.stream)
-    img.show()
+    #img.show()
 
     #return jsonify({'msg': 'success', 'size': [img.width, img.height]})
 
