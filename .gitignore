@@ -127,3 +127,22 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Mobile app exclusions
+/anpr-mapp/node_modules/**/*
+/anpr-mapp/.expo/*
+/anpr-mapp/npm-debug.*
+/anpr-mapp/*.jks
+/anpr-mapp/*.p8
+/anpr-mapp/*.p12
+/anpr-mapp/*.key
+/anpr-mapp/*.mobileprovision
+/anpr-mapp/*.orig.*
+/anpr-mapp/web-build/
+/anpr-mapp/.gitignore
+
+# macOS
+/anpr-mapp/.DS_Store
+
+# VSCode
+/.vscode

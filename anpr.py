@@ -13,7 +13,7 @@ minAR=4
 maxAR=5
 debug=False
 
-def debug_imshow(title, image, waitKey=False):
+def debug_imshow(title, image, waitKey=True):
     # check to see if we are in debug mode, and if so, show the
     # image with the supplied title
     if debug:
@@ -60,7 +60,7 @@ def locate_license_plate_candidates(gray, keep=5):
     # return the list of contours
     return cnts
 
-def locate_license_plate(gray, candidates, clearBorder=False):
+def locate_license_plate(gray, candidates, clearBorder=True):
     # initialize the license plate contour and ROI
     lpCnt = None
     roi = None
@@ -116,8 +116,10 @@ def find_and_ocr(image, psm=7, clearBorder=False):
                                             clearBorder=clearBorder)
     # only OCR the license plate if the license plate ROI is not
     # empty
+    
     if lp is not None:
         # OCR the license plate
+        debug_imshow('pretessaract', lp)
         pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
         options = build_tesseract_options(psm=psm)
         lpText = pytesseract.image_to_string(lp, config=options)
@@ -134,17 +136,23 @@ def cleanup_text(text):
 
 @app.route("/anpr", methods=["POST"])
 def process_image():
-    file = request.files['image']
+	
+    print("debug", request.__getattribute__)
+    file = request.files.get('image')
     print("file = ", file)
     # Read the image via file.stream
-    img = Image.open(file.stream)
+    img = Image.open(file.stream).convert('RGB')
     #img.show()
 
     #return jsonify({'msg': 'success', 'size': [img.width, img.height]})
 
     image = np.array(img)
     image = cv2.resize(image, (600, 360))
+    # cv2.imshow("Output ANPR", image)
+    # cv2.waitKey(0)
+
     (lpText, lpCnt) = find_and_ocr(image)
+    
 
     if lpText is not None and lpCnt is not None:
         # fit a rotated bounding box to the license plate contour and
@@ -163,15 +171,15 @@ def process_image():
         # show the output ANPR image
         #print(format(lpText))
         print("[INFO] {}".format(lpText))
-        #cv2.imshow("Output ANPR", image)
+        # cv2.imshow("Output ANPR", image)
         cv2.imwrite("images/output.png", image)
-        #cv2.waitKey(0)
-    
-
-    return jsonify({'vechileId':format(cleanup_text(lpText))})
+        # cv2.waitKey(0)
+        return jsonify({'vechileId':format(cleanup_text(lpText))})
+    else:
+        return jsonify({'vechileId':'unable to decode'})
     #return send_file("images/output.png", mimetype='images/png', as_attachment=True, attachment_filename='output.png')
     
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=2040)
+    app.run(debug=True, host="192.168.0.188", port=2040)
