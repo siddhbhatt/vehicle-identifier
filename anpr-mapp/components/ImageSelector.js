@@ -31,7 +31,7 @@ function ImageSelector(props) {
       if (!resultMedia) {
         Alert.alert(
           "Insufficient privilege",
-          "Permission required to access camera",
+          "Permission required to photo roll",
           [{ text: "Ok" }]
         );
         return;

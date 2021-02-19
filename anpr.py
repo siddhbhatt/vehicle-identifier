@@ -137,7 +137,6 @@ def cleanup_text(text):
 @app.route("/anpr", methods=["POST"])
 def process_image():
 	
-    print("debug", request.__getattribute__)
     file = request.files.get('image')
     print("file = ", file)
     # Read the image via file.stream
