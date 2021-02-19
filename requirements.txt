@@ -1,0 +1,6 @@
+opencv
+Flask
+imutils
+scikit-image
+numpy
+pytesseract
