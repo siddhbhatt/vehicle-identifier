@@ -10,7 +10,7 @@
 ## Setup hints
 * Setup python packages as per [requirements.txt](requirements.txt)
 ```python
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 * Add React and Expo dependencies per [package.json](anpr-mapp/package.json)
   
